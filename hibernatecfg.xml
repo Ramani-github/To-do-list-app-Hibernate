@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+
+	<session-factory>
+		<!--Use Hibernate's own connection pool configuration-->
+		
+		<property name="connection.url">jdbc:mysql://localhost:3306/to_do_list_app?createDatabaseIfNotExist=true</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        
+        <property name="hbm2ddl.auto">update</property>
+        
+        <!--hibernate dialect my sql-->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        
+        <!--Print sql statement-->
+        <property name="hibernate.show_sql">true</property>
+        
+        <!--Format sql-->
+        <property name="hibernate.format_sql">true</property>
+        
+        <!-- user info table to store username and password -->
+        <mapping class="com.paresh.todolist.user_info"/>
+        
+        <!-- store al tasks -->
+        <mapping class="com.paresh.todolist.TaskList"/>
+        
+	</session-factory>
+
+</hibernate-configuration>
+        
+        
