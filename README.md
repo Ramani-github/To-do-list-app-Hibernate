@@ -1,6 +1,6 @@
 # TaskBox a To-do list app in Java with MySQL
 
-A To-Do List app using java. User can create account, login, add tasks, change or delete tasks, change password and delete account. It connects to app database (MySQL) using hibernate.Hibernate is a Java framework that simplifies the development of Java application to interact with the database. It is an open source, lightweight, ORM (Object Relational Mapping) tool. Hibernate implements the specifications of JPA (Java Persistence API) for data persistence. I have used mavenin this poject.Maven is a powerful project management tool that is based on POM (project object model). It is used for projects build, dependency etc.
+A To-Do List app using java. User can create account, login, add tasks, change or delete tasks, change password and delete account. It connects to app database (MySQL) using hibernate.Hibernate is a Java framework that simplifies the development of Java application to interact with the database. It is an open source, lightweight, ORM (Object Relational Mapping) tool. Hibernate implements the specifications of JPA (Java Persistence API) for data persistence. I have used maven in this poject. Maven is a powerful project management tool that is based on POM (project object model). It is used for projects build, dependency etc.
 
 ## Required Packages
 * JDK
