@@ -1,5 +1,7 @@
 package todolistapp;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.*;
@@ -100,8 +102,15 @@ public class App
 
         if (task.equals("0"))
         {
+        	Date date = new Date();
+        	SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
+    		SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
+    		
+    		String current_date = formatDate.format(date);
+    		String current_time = formatTime.format(date); 
+    		
             panel_taskedit = new TaskEdit( "Enter task name","Enter task details" ,
-                    "dd-MM-yyyy","HH:mm","dd-MM-yyyy","HH:mm");
+            		current_date,current_time,current_date,current_time);
 
         }
         else {
@@ -190,8 +199,7 @@ public class App
 
         task_panel.button_delact.addActionListener(e -> { task_panel.setVisible(false); 
         		taskview_panel.setVisible(false);
-                database.remove_user_userinfo(usr_name);
-                database.delete_alltasks(usr_name);
+                database.remove_user(usr_name);
                 frame.panel1.setVisible(true); 
                 frame.panel2.setVisible(true);});
 
@@ -213,7 +221,12 @@ public class App
 
         task_panel.button_changepswd.addActionListener( e -> { task_panel.setVisible(false); 
         		taskview_panel.setVisible(false);
-        		change_password(usr_name); } );
+        		try {
+					change_password(usr_name);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} } );
 
         // add action listener for going back to main menu
 
@@ -263,7 +276,7 @@ public class App
        
     }
     // function to change password of user
-    public static void change_password(String usr_name) {
+    public static void change_password(String usr_name) throws IOException {
 
         // create panel for change_password
 
