@@ -11,18 +11,12 @@ A To-Do List app using java. User can create account, login, add tasks, change o
 
 ## How to run
 
-* In IDE
-
-```
-* In Main.java. Change mysql_username and mysql_password to your url, username and password.
-* Run Main.java in your IDE.
-```
-
-* Ubuntu
+### Ubuntu
 
 ```
 * Install mysql-server : sudo apt-get install mysql-server
 * first export the jar file - export CLASSPATH="/path/to/file":${CLASSPATH}
+* In Main.java. Change mysql_username and mysql_password to your url, username and password.
 * Compile - javac Main.java
 * Run - java Main
 ```
