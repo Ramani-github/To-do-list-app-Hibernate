@@ -158,8 +158,6 @@ public class DatabaseApi {
 		
 		List<TaskList> tasks_list = temp.getTasks();
 		
-		temp.setTasks(null);
-		
 		int i=0;
 		
 		for(;i<tasks_list.size();i++) {
