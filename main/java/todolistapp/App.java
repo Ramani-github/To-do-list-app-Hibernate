@@ -151,12 +151,10 @@ public class App
         }
 
         panel_taskedit.button_backmenu.addActionListener( e -> { panel_taskedit.setVisible(false); 
-        													try {
-																task_page(usr_name);
-															} catch (IOException e1) {
-																// TODO Auto-generated catch block
-																e1.printStackTrace();
-															}} );
+        		try {
+					task_page(usr_name);
+				} catch (IOException e1) {
+					e1.printStackTrace();}} );
     }
 
     // go to task page if credentials are correct or come back to tasks page

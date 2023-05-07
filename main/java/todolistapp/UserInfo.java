@@ -1,5 +1,6 @@
 package todolistapp;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -65,6 +66,30 @@ public class UserInfo {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return this.user_id + ":" + this.user_password;
+	}
+	
+	// add task
+	
+	public void add_task(TaskList task)
+	{
+		this.tasks.add(task);
+	}
+	
+	// remove task
+	public void remove_task(int i)
+	{
+		this.tasks.remove(i);
+	}
+	
+	// update task
+	public void update_task(int i, String new_task, String task_details, Date start_date, Date start_time, 
+			Date end_date, Date end_time) {
+		this.tasks.get(i).setTask_name(new_task);
+		this.tasks.get(i).setTask_details(task_details);
+		this.tasks.get(i).setStart_date(start_date);
+		this.tasks.get(i).setStart_time(start_time);
+		this.tasks.get(i).setEnd_date(end_date);
+		this.tasks.get(i).setEnd_time(end_time);
 	}
 	
 

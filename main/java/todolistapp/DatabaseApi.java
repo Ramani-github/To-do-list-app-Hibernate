@@ -169,7 +169,7 @@ public class DatabaseApi {
 			
 		}
 		
-		tasks_list.remove(i);
+		temp.remove_task(i);
 		
 		session.update(temp);
 		tr.commit();
@@ -213,10 +213,6 @@ public class DatabaseApi {
 		
 		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
 		
-		List<TaskList> tasks_list = temp.getTasks();
-		
-		temp.setTasks(null);
-		
 		TaskList task = new TaskList();
 		
 		task.setTask_name(task_name);
@@ -227,9 +223,8 @@ public class DatabaseApi {
 		task.setEnd_time(new SimpleDateFormat("HH:mm").parse(end_time));
 		task.setUser_info(temp);
 		
-		tasks_list.add(task);
+		temp.add_task(task);
 		
-		temp.setTasks(tasks_list);
 		session.update(temp);
 		
 		tr.commit();
@@ -249,8 +244,6 @@ public class DatabaseApi {
 		
 		List<TaskList> tasks_list = temp.getTasks();
 		
-		temp.setTasks(null);
-		
 		int i=0;
 		
 		for(;i<tasks_list.size();i++) {
@@ -260,21 +253,10 @@ public class DatabaseApi {
 			
 		}
 		
-		tasks_list.remove(i);
+		temp.update_task(i, new_task, task_details, new SimpleDateFormat("dd-MM-yyyy").parse(start_date),
+				new SimpleDateFormat("HH:mm").parse(start_time), new SimpleDateFormat("dd-MM-yyyy").parse(end_date),
+						new SimpleDateFormat("HH:mm").parse(end_time));
 		
-		TaskList task = new TaskList();
-		
-		task.setTask_name(new_task);
-		task.setTask_details(task_details);
-		task.setStart_date(new SimpleDateFormat("dd-MM-yyyy").parse(start_date));
-		task.setStart_time(new SimpleDateFormat("HH:mm").parse(start_time));
-		task.setEnd_date(new SimpleDateFormat("dd-MM-yyyy").parse(end_date));
-		task.setEnd_time(new SimpleDateFormat("HH:mm").parse(end_time));
-		task.setUser_info(temp);
-		
-		tasks_list.add(task);
-		
-		temp.setTasks(tasks_list);
 		session.update(temp);
 		
 		tr.commit();
