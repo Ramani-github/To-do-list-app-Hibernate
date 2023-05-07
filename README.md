@@ -1,22 +1,19 @@
 # TaskBox a To-do list app in Java with MySQL
 
-A To-Do List app using java. User can create account, login, add tasks, change or delete tasks, change password and delete account. It connects to app database (MySQL) with JDBC (Java Database Connectivity) through the Java code. JDBC is one of the standard APIs for database connectivity, using it we can easily run our query, statement, and also fetch data from the database.
+A To-Do List app using java. User can create account, login, add tasks, change or delete tasks, change password and delete account. It connects to app database (MySQL) using hibernate.Hibernate is a Java framework that simplifies the development of Java application to interact with the database. It is an open source, lightweight, ORM (Object Relational Mapping) tool. Hibernate implements the specifications of JPA (Java Persistence API) for data persistence. I have used mavenin this poject.Maven is a powerful project management tool that is based on POM (project object model). It is used for projects build, dependency etc.
 
 ## Required Packages
-* Swing (GUI widget toolkit for Java)
 * JDK
 * MySQL
-* MySQL Connector to the Java (JAR file), the ‘JAR’ file must be in classpath while compiling and running the code of JDBC
 
 ## IDE Used
-* IntelliJ IDEA
+* Eclipse
 
 ## How to run
 
 * In IDE
 
 ```
-* Add jar file to your project (included in lib directory).
 * In Main.java. Change mysql_username and mysql_password to your url, username and password.
 * Run Main.java in your IDE.
 ```
