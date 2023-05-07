@@ -1,7 +1,8 @@
-package com.paresh.todolist;
+package todolistapp;
 
 import javax.swing.*;
 import java.awt.*;
+@SuppressWarnings("serial")
 public class ChangePassword extends JPanel {
 
     JButton button_changepassword = new JButton();

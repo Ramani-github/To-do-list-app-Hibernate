@@ -26,10 +26,10 @@
         <property name="hibernate.format_sql">true</property>
         
         <!-- user info table to store username and password -->
-        <mapping class="com.paresh.todolist.user_info"/>
+        <mapping class="todolistapp.UserInfo"/>
         
         <!-- store al tasks -->
-        <mapping class="com.paresh.todolist.TaskList"/>
+        <mapping class="todolistapp.TaskList"/>
         
 	</session-factory>
 
