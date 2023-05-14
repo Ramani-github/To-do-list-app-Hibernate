@@ -22,7 +22,7 @@ public class UserInfo {
 	@Column(length=20,name="User_Password")
 	private String user_password;
 	
-	@OneToMany(mappedBy="user_info",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="user_info",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<TaskList> tasks;
 	
 

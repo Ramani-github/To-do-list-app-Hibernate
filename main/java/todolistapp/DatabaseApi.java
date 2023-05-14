@@ -5,32 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DatabaseApi {
 	
-	private Configuration cfg;
-	private SessionFactory factory;
-	private Session session;
-	private Transaction tr;
-	
-	DatabaseApi()
-	{
-		cfg = new Configuration();
-        cfg.configure("hibernatecfg.xml");
-        factory = cfg.buildSessionFactory();
-	}
+	private HibernateTemplate hibernateTemplate;
 	
 	//check if userid is present
 	
 	public int check_userid(String name) {
 		
-		session = factory.openSession();
-		UserInfo usr_info = (UserInfo)session.get(UserInfo.class, name);
-		session.close();
+		UserInfo usr_info = this.hibernateTemplate.get(UserInfo.class, name);
 		
 		if(usr_info == null)
 			return 0;
@@ -39,43 +25,33 @@ public class DatabaseApi {
 	}
 	
 	//add a new account
-
+	@Transactional
 	public void add_new_account(String text, String passwordTyped) {
 		
-		session = factory.openSession();
 		UserInfo temp = new UserInfo();
 		temp.setUser_id(text);
 		temp.setUser_password(passwordTyped);
 		
 		List<TaskList> list = new ArrayList<TaskList>();
 		temp.setTasks(list);
-		tr = session.beginTransaction();
-		session.save(temp);
-		tr.commit();
-		session.close();
+		this.hibernateTemplate.save(temp);
 	}
 	
 	// get user password of a user
 
 	public String get_userpassword(String usr_name) {
-		session = factory.openSession();
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
-		tr = session.beginTransaction();
-		session.close();
+		
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		return temp.getUser_password();
 	}
 	
 	// change password of a user
-
+	@Transactional
 	public void change_password(String passwordTyped, String usr_name) {
-		session = factory.openSession();
-		tr = session.beginTransaction();
 		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		temp.setUser_password(passwordTyped);
-        session.update(temp); 
-		tr.commit();
-		session.close();
+		this.hibernateTemplate.update(temp); 
 	}
 	
 	// get all tasks of a user
@@ -84,33 +60,21 @@ public class DatabaseApi {
 		
 		List<String> result = new ArrayList<String>();
 		
-		session = factory.openSession();
-		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		
 		for(TaskList t:temp.getTasks())
 			result.add(t.getTask_name());
-		
-		session.close();
 		
 		return result;
 	}
 	
 	// remove user and all tasks
-
+	@Transactional
 	public void remove_user(String usr_name) {
 		
-		session = factory.openSession();
-		tr = session.beginTransaction();
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
-		
-		session.delete(temp);
-		
-		tr.commit();
-		
-		session.close();
-		
+		this.hibernateTemplate.delete(temp);
 	}
 	
 	// get all details of a task
@@ -119,9 +83,7 @@ public class DatabaseApi {
 		
 		List<String> result = new ArrayList<String>();
 		
-		session = factory.openSession();
-		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		List<TaskList> tasks_list = temp.getTasks();
 		
 		int i=0;
@@ -142,19 +104,14 @@ public class DatabaseApi {
 		result.add( formatDate.format(tasks_list.get(i).getEnd_date()) );
 		result.add( formatTime.format(tasks_list.get(i).getEnd_time()) );
 		
-		session.close();
-		
 		return result;
 	}
 	
 	//delete a task
-
+	@Transactional
 	public void delete_task(String usr_name, String task) {
 		
-		session = factory.openSession();
-		tr = session.beginTransaction();
-		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		
 		List<TaskList> tasks_list = temp.getTasks();
 		
@@ -169,20 +126,14 @@ public class DatabaseApi {
 		
 		temp.remove_task(i);
 		
-		session.update(temp);
-		tr.commit();
-		
-		session.close();
-		
+		this.hibernateTemplate.update(temp);
 	}
 	
 	//check if a task exist
 
 	public int check_task_exist(String usr_name, String new_task) {
 		
-		session = factory.openSession();
-		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		List<TaskList> tasks_list = temp.getTasks();
 		
 		int ans = 0;
@@ -195,21 +146,16 @@ public class DatabaseApi {
 				break;
 			}	
 		}
-		
-		session.close();
-		
+			
 		return ans;
 	}
 	
 	// add a new task
-
+	@Transactional
 	public void add_task(String usr_name, String task_name,String task_details, String start_date, 
 			String start_time, String end_date, String end_time) throws ParseException {
 		
-		session = factory.openSession();
-		tr = session.beginTransaction();
-		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		
 		TaskList task = new TaskList();
 		
@@ -223,22 +169,15 @@ public class DatabaseApi {
 		
 		temp.add_task(task);
 		
-		session.update(temp);
-		
-		tr.commit();
-		session.close();
-		
+		this.hibernateTemplate.update(temp);
 	}
 	
 	// update a task
-
+	@Transactional
 	public void update_task(String usr_name, String new_task, String task_details, String start_date, 
 			String start_time, String end_date, String end_time, String old_task) throws ParseException {
-		
-		session = factory.openSession();
-		tr = session.beginTransaction();
-		
-		UserInfo temp = (UserInfo)session.get(UserInfo.class, usr_name);
+				
+		UserInfo temp = this.hibernateTemplate.get(UserInfo.class, usr_name);
 		
 		List<TaskList> tasks_list = temp.getTasks();
 		
@@ -255,11 +194,15 @@ public class DatabaseApi {
 				new SimpleDateFormat("HH:mm").parse(start_time), new SimpleDateFormat("dd-MM-yyyy").parse(end_date),
 						new SimpleDateFormat("HH:mm").parse(end_time));
 		
-		session.update(temp);
-		
-		tr.commit();
-		session.close();
-		
+		this.hibernateTemplate.update(temp);
+	}
+
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 
 }

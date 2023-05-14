@@ -1,38 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE hibernate-configuration PUBLIC
-	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
 	
-<hibernate-configuration>
+	<tx:annotation-driven/>
+	
+	<!-- datasource object -->
+	
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/to_do_list_app?createDatabaseIfNotExist=true"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"></property>
+	</bean>
 
-	<session-factory>
-		<!--Use Hibernate's own connection pool configuration-->
-		
-		<property name="connection.url">jdbc:mysql://localhost:3306/to_do_list_app?createDatabaseIfNotExist=true</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        
-        <property name="hbm2ddl.auto">update</property>
-        
-        <!--hibernate dialect my sql-->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
-        
-        <!--Print sql statement-->
-        <property name="hibernate.show_sql">true</property>
-        
-        <!--Format sql-->
-        <property name="hibernate.format_sql">true</property>
-        
-        <!-- user info table to store username and password -->
-        <mapping class="todolistapp.UserInfo"/>
-        
-        <!-- store al tasks -->
-        <mapping class="todolistapp.TaskList"/>
-        
-	</session-factory>
+	<!-- session factory object -->
+	
+	<bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" name="factory">
+		<property name="dataSource" ref="ds"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>todolistapp.UserInfo</value>
+				<value>todolistapp.TaskList</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- HibernateTemplate object -->
+	
+	<bean class="org.springframework.orm.hibernate5.HibernateTemplate" name="hibernateTemplate"> 
+		<property name="sessionFactory" ref="factory"></property>
+	</bean>
 
-</hibernate-configuration>
-        
-        
+	<!-- database api object -->
+	
+	<bean class="todolistapp.DatabaseApi" name="databaseapi"> 
+		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
+	</bean>
+
+	<!-- transaction manager object -->
+	
+	<bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" name="transactionManager"> 
+		<property name="sessionFactory" ref="factory"></property>
+	</bean>
+	
+</beans>   

@@ -4,16 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.*;
-import org.hibernate.cfg.Configuration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
 	static LoginFrame frame;
+	static ApplicationContext context;
 	static DatabaseApi database;
 	
 	// action for register button when clicked
@@ -300,55 +297,13 @@ public class App
 		}} );
     }
 	
-	public static void hibernate_demo()
-	{
-		
-		System.out.println( "Hello World!" );
-        Configuration cfg = new Configuration();
-        cfg.configure("hibernatecfg.xml");
-        SessionFactory factory = cfg.buildSessionFactory();
-        
-        UserInfo ui = new UserInfo();
-        ui.setUser_id("paresh");
-        ui.setUser_password("pari");
-        
-        TaskList tasks = new TaskList();
-        tasks.setTask_name("study");
-        tasks.setTask_details("java");
-        //tasks.setStart_time("21:00");
-        //tasks.setStart_date("02-09-2023");
-        //tasks.setEnd_date("02-09-2024");
-        //tasks.setEnd_time("21:0");
-        
-        System.out.println(ui);
-        System.out.println(tasks);
-        
-        Session session = factory.openSession();
-        
-        Session session2 = factory.openSession();
-        
-        
-        Transaction tr = session.beginTransaction();
-        
-        Transaction tr2 = session2.beginTransaction();
-        
-        session.save(ui);
-        
-        tr.commit();
-        
-        session2.save(tasks);
-        
-        tr2.commit();
-        
-        session.close();
-        session2.close();
-	}
-	
     public static void main( String[] args ) throws IOException
     {
     	
     	frame = new LoginFrame();
-    	database = new DatabaseApi();
+    	
+    	context = new ClassPathXmlApplicationContext("hibernatecfg.xml");
+    	database = context.getBean("databaseapi",DatabaseApi.class);
     	
     	 // set action for login and register button
     		
