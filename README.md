@@ -5,6 +5,7 @@ A To-Do List app using java. User can create account, login, add tasks, change o
 ## Required Packages
 * JDK
 * MySQL
+* Maven
 
 ## IDE Used
 * Eclipse
@@ -15,10 +16,12 @@ A To-Do List app using java. User can create account, login, add tasks, change o
 
 ```
 * Install mysql-server : sudo apt-get install mysql-server
-* first export the jar file - export CLASSPATH="/path/to/file":${CLASSPATH}
-* In Main.java. Change mysql_username and mysql_password to your url, username and password.
-* Compile - javac Main.java
-* Run - java Main
+* git clone this project
+* Open your IDE and import the project.
+* Make sure IDE recognizes the project as a Maven project and downloads the necessary dependencies.
+* Locate the main class of the project.
+* Right-click on the main class and select "Run" or "Run As" > "Java Application" (options may vary depending on IDE).
+* The project will now run.
 ```
 
 * You dont need to create any database or tables as database and tables will created by app. But if you want to create initial user_info tables to fill some values follow this steps:
